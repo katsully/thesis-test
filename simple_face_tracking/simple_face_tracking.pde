@@ -28,10 +28,10 @@ void setup() {
   kinect.enableColorImg(true);
 
   //for face detection base on the infrared Img
-  kinect.enableInfraredImg(true);
+  //kinect.enableInfraredImg(true);
 
   //enable face detection
-  kinect.enableFaceDetection(true);
+  //kinect.enableFaceDetection(true);
   //enable 3d  with (x,y,z) position
   kinect.enableSkeleton3DMap(true);
 
@@ -41,29 +41,33 @@ void setup() {
 void draw() {
   background(0);
 
-  kinect.generateFaceData();
+  //kinect.generateFaceData();
 
   //draw face information obtained by the color frame
-  pushMatrix();
-  scale(0.5f);
-  image(kinect.getColorImage(), 0, 0);
-  getFaceMapColorData();
-  popMatrix();
+  //pushMatrix();
+  //scale(0.5f);
+  image(kinect.getColorImage(),0,0, 320, 240);
+  //getFaceMapColorData();
+  //popMatrix();
 
 
   //draw face information obtained by the infrared frame
+  //pushMatrix();
+  //translate(1920*0.5f, 0.0f);
+  //image(kinect.getInfraredImage(), 0, 0);
+  //getFaceMapInfraredData();
+  //popMatrix();
+  
   pushMatrix();
-  translate(1920*0.5f, 0.0f);
-  image(kinect.getInfraredImage(), 0, 0);
-  getFaceMapInfraredData();
-  popMatrix();
-
-
-  fill(255);
-  //text("frameRate "+frameRate, 50, 50);
+  //translate(width/2, height/2, 0);
+  translate(width/2,height/2,0);
+  scale(300);
+  rotateX(PI);
 
   // skeleton
   ArrayList<KSkeleton> skeletonArray =  kinect.getSkeleton3d();
+  //ArrayList<KSkeleton> skeletonArray = kinect.getSkeletonColorMap();
+  //ArrayList<KSkeleton> skeletonArray = kinect.getSkeletonDepthMap();
   // Get the skeleton
   // This sketch assumes one skeleton
   if (skeletonArray.size() > 0) {
@@ -122,11 +126,13 @@ void draw() {
 
 
       //Draw joints
-      stroke(255);
-      strokeWeight(5);
-      drawJoints();
+      color col = skeleton.getIndexColor();
+      fill(255);
+      stroke(col);
+      drawJoints(joints);
     }
   }
+  popMatrix();
 }
 
 
@@ -178,6 +184,7 @@ public void getFaceMapColorData() {
           String str = getStateTypeAsString(st, type);
 
           fill(255);
+          textSize(32);
           text(str, nosePos.x + 150, nosePos.y - 70 + j*25);
           //println("HERE");
         }
@@ -303,55 +310,59 @@ String getStateTypeAsString(int state, int type) {
   return str;
 }
 
-void drawJoints() {
+void drawJoints(KJoint[] joints) {
   //Bust
-  drawJoint(KinectPV2.JointType_Head);
-  drawJoint(KinectPV2.JointType_Neck);
-  drawJoint(KinectPV2.JointType_SpineShoulder);
+  drawJoint(joints, KinectPV2.JointType_Head);
+  drawJoint(joints, KinectPV2.JointType_Neck);
+  drawJoint(joints, KinectPV2.JointType_SpineShoulder);
 
   //Torso
-  drawJoint(KinectPV2.JointType_SpineMid);
-  drawJoint(KinectPV2.JointType_SpineBase);
+  drawJoint(joints, KinectPV2.JointType_SpineMid);
+  drawJoint(joints, KinectPV2.JointType_SpineBase);
 
   // Right Arm    
-  drawJoint(KinectPV2.JointType_ShoulderRight);
-  drawJoint(KinectPV2.JointType_ElbowRight);
-  drawJoint(KinectPV2.JointType_WristRight);
-  drawJoint(KinectPV2.JointType_HandRight);
-  drawJoint(KinectPV2.JointType_HandTipRight);
-  drawJoint(KinectPV2.JointType_ThumbRight);
+  drawJoint(joints, KinectPV2.JointType_ShoulderRight);
+  drawJoint(joints, KinectPV2.JointType_ElbowRight);
+  drawJoint(joints, KinectPV2.JointType_WristRight);
+  drawJoint(joints, KinectPV2.JointType_HandRight);
+  drawJoint(joints, KinectPV2.JointType_HandTipRight);
+  drawJoint(joints, KinectPV2.JointType_ThumbRight);
 
   // Left Arm
-  drawJoint(KinectPV2.JointType_ShoulderLeft);
-  drawJoint(KinectPV2.JointType_ElbowLeft);
-  drawJoint(KinectPV2.JointType_WristLeft);
-  drawJoint(KinectPV2.JointType_HandLeft);
-  drawJoint(KinectPV2.JointType_HandTipLeft);
-  drawJoint(KinectPV2.JointType_ThumbLeft);
+  drawJoint(joints, KinectPV2.JointType_ShoulderLeft);
+  drawJoint(joints, KinectPV2.JointType_ElbowLeft);
+  drawJoint(joints, KinectPV2.JointType_WristLeft);
+  drawJoint(joints, KinectPV2.JointType_HandLeft);
+  drawJoint(joints, KinectPV2.JointType_HandTipLeft);
+  drawJoint(joints, KinectPV2.JointType_ThumbLeft);
 
   // Right Leg
-  drawJoint(KinectPV2.JointType_HipRight);
-  drawJoint(KinectPV2.JointType_KneeRight);
-  drawJoint(KinectPV2.JointType_AnkleRight);
-  drawJoint(KinectPV2.JointType_FootRight);
+  drawJoint(joints, KinectPV2.JointType_HipRight);
+  drawJoint(joints, KinectPV2.JointType_KneeRight);
+  drawJoint(joints, KinectPV2.JointType_AnkleRight);
+  drawJoint(joints, KinectPV2.JointType_FootRight);
 
   // Left Leg
-  drawJoint(KinectPV2.JointType_HipLeft);
-  drawJoint(KinectPV2.JointType_KneeLeft);
-  drawJoint(KinectPV2.JointType_AnkleLeft);
-  drawJoint(KinectPV2.JointType_FootLeft);
+  drawJoint(joints, KinectPV2.JointType_HipLeft);
+  drawJoint(joints, KinectPV2.JointType_KneeLeft);
+  drawJoint(joints, KinectPV2.JointType_AnkleLeft);
+  drawJoint(joints, KinectPV2.JointType_FootLeft);
 }
 
-void drawJoint(int jointType) {
-  pushMatrix();
-  translate(1500, 1080/2, 0);
-  scale(10);
-  rotateX(PI);
+void drawJoint(KJoint[] joints, int jointType) {
+  //pushMatrix();
   KJoint joint = joints[jointType];
+  //scale(100);
+
+  //translate(width/2, height/2,0);
+  //scale(300);
+  //rotateX(PI);
+  //KJoint joint = joints[jointType];
   PVector jointPosition = joint.getPosition();
   point(jointPosition.x, jointPosition.y, jointPosition.z);
-  //println("x position " + jointPosition.x);
-  //println("y position " + jointPosition.y);
-  //println("z position " + jointPosition.z);
-  popMatrix();
+  //ellipse(0, 0, 25, 25);
+  println("x position " + joint.getX());
+  println("y position " + joint.getY());
+  println("z position " + joint.getZ());
+  //popMatrix();
 }
