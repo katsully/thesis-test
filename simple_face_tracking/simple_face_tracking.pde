@@ -7,10 +7,6 @@ Thomas Sanchez Lengeling.
  Simple Face tracking, up-to 6 users with mode identifier
  */
 
-
-/*
-
- */
 import KinectPV2.*;
 
 KinectPV2 kinect;
@@ -361,8 +357,8 @@ void drawJoint(KJoint[] joints, int jointType) {
   PVector jointPosition = joint.getPosition();
   point(jointPosition.x, jointPosition.y, jointPosition.z);
   //ellipse(0, 0, 25, 25);
-  println("x position " + joint.getX());
-  println("y position " + joint.getY());
-  println("z position " + joint.getZ());
+  //println("x position " + joint.getX());
+  //println("y position " + joint.getY());
+  //println("z position " + joint.getZ());
   //popMatrix();
 }
